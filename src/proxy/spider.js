@@ -10,4 +10,14 @@ export default new class {
       throw err;
     }
   }
+
+  findOne = async (article_id) => {
+    try {
+      const result = await Article.findOne({ article_id }).exec();
+      return !!result;
+    } catch (err) {
+      console.log('findOne err = ', err);
+      throw err;
+    }
+  }
 };
