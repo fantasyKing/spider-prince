@@ -13,13 +13,20 @@ export default new class {
   constructor() {
     this.spider = new Crawler({
       rateLimit: 500,
-      maxConnections: 1,
+      maxConnections: 10,
       callback: (err, res, done) => {
         if (err) {
           console.error('there is no callback run, and the err is ', err);
         }
         done();
       }
+    });
+    // this.spider.on('schedule', (options) => {
+    //   console.log('spider options = ', options);
+    // });
+
+    this.spider.on('request', () => {
+      console.log('spider request is ready');
     });
   }
 
