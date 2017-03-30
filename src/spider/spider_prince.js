@@ -27,6 +27,7 @@ export default new class {
 
     this.spider.on('request', () => {
       console.log('spider request is ready');
+      console.log('spider.queue.size', this.spider.queueSize);
     });
   }
 
