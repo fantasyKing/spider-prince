@@ -5,22 +5,32 @@ import {
 } from './../spider_proxy';
 
 export default new class {
-  handle = async (promise) => {
-    const items = await promise;
-    const { data } = items;
+  constructor() {
+    this.num = 0;
+  }
 
-    for (let item of data) {
-      item = util.filter(item, ['title', 'description', 'url', 'display_time', 'thumb', 'id']);
-      const articleText = await SpiderArticle.scratch(item.url);
-      item.text = articleText;
-      item.display_time = new Date(util.formatTime(item.display_time)).toISOString();
-      const artExist = await spider.findOne(item.article_id);
-      console.log('artExist--->', artExist);
-      if (artExist) {
-        continue;
+  handle = async (promise) => {
+    try {
+      const items = await promise;
+      const { data } = items;
+
+      for (let item of data) {
+        item = util.filter(item, ['title', 'description', 'url', 'display_time', 'thumb', 'id']);
+        const articleText = await SpiderArticle.scratch(item.url);
+        item.text = articleText;
+        const display_time = util.formatTime(item.display_time);
+        item.display_time = display_time && new Date(display_time).toISOString();
+        const artExist = await spider.findOne(item.article_id);
+        console.log('artExist--->', artExist);
+        if (artExist) {
+          continue;
+        }
+        await spider.saveArticle(item);
+        this.num++;
+        console.log('saveArticle', item.title, this.num);
       }
-      const result = await spider.saveArticle(item);
-      console.log('result--->', result);
+    } catch (err) {
+      console.log('spider.hander.error', err.name, err.message);
     }
   }
 };

@@ -12,8 +12,8 @@ import Crawler from 'crawler';
 export default new class {
   constructor() {
     this.spider = new Crawler({
-      rateLimit: 500,
-      maxConnections: 5,
+      rateLimit: 1000,
+      maxConnections: 100,
       callback: (err, res, done) => {
         if (err) {
           console.error('there is no callback run, and the err is ', err);
