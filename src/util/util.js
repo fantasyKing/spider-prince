@@ -30,8 +30,18 @@ export default new class {
         obj[key] = `${config.uri}/article/${item.id}`;
         continue;
       }
+
+      if (key === 'id') {
+        obj['article_id'] = `${item.id}`;
+        continue;
+      }
       obj[key] = item[key] || '';
     }
     return obj;
+  }
+
+  formatTime = (timeStr) => {
+    const timeReg = new RegExp('\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2}');
+    return timeStr.match(timeReg)[0];
   }
 };

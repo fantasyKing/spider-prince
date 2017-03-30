@@ -1,11 +1,11 @@
-import cheerio from 'cheerio';
-
 import config from './../config';
 import {
   SpiderTab,
-  SpiderAjax
+  SpiderAjax,
+  SpiderArticle
 } from './../spider_proxy';
 import util from './../util/util';
+import spider from './../proxy/spider';
 
 export default new class {
   /**
@@ -23,14 +23,16 @@ export default new class {
         const items = await SpiderAjax.scratch(archiveUrl);
 
         const { data } = items;
-        const articles = [];
 
         for (let item of data) {
-          item = util.filter(item, ['title', 'description', 'url', 'display_time', 'thumb']);
-          articles.push(item);
+          item = util.filter(item, ['title', 'description', 'url', 'display_time', 'thumb', 'id']);
+          const articleText = await SpiderArticle.scratch(item.url);
+          item.text = articleText;
+          item.display_time = new Date(util.formatTime(item.display_time)).toISOString();
+          const result = await spider.saveArticle(item);
+          console.log('result--->', result);
           i++;
         }
-        console.log('articles---->', articles);
       }
     }
     console.log('the count of articles is =', i);

@@ -38,9 +38,15 @@
     "request-promise": "^4.2.0"
   },
   "dependencies": {
-    "cheerio": "^0.22.0",
     "crawler": "^1.0.3",
+    "mongoose": "^4.9.2",
     "request": "^2.81.0",
     "request-promise": "^4.2.0"
+  },
+  "ava": {
+    "babel": "inherit",
+    "require": [
+      "babel-register"
+    ]
   }
 }
