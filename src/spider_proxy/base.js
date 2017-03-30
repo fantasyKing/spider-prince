@@ -8,7 +8,7 @@ export default class {
       }
       return await spiderPrince.enQueue(uri, this.callback);
     } catch (err) {
-      console.debug('spider err', err);
+      console.log('spider err', err);
       throw err;
     }
   }

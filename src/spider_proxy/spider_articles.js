@@ -8,7 +8,7 @@ export default new class extends Base {
         return reject(err);
       }
       const $ = res.$;
-      const article = $('div.detail').text();
+      const article = $('div.detail p').text();
       resolve(article.replace(/\s/g, ''));
       return done();
     };
