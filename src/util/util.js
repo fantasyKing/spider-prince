@@ -15,7 +15,7 @@ export default new class {
     let i = 0;
     const result = [];
     while (i !== 100) {
-      result.push(`${archivePrefix}i`);
+      result.push(`${archivePrefix}${i}`);
       i++;
     }
     return result;
