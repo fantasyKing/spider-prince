@@ -6,6 +6,7 @@ import {
 } from './../spider_proxy';
 import util from './../util/util';
 import spider from './../proxy/spider';
+import handlerEvent from './../util/handler_event';
 
 export default new class {
   /**
@@ -15,31 +16,13 @@ export default new class {
    */
   scratch = async () => {
     const tabs = await SpiderTab.scratch(config.uri);
-    let i = 0;
     for (const tab of tabs) {
       const archivesUrls = util.getArchivesUrls(tab);
 
       for (const archiveUrl of archivesUrls) {
-        const items = await SpiderAjax.scratch(archiveUrl);
-
-        const { data } = items;
-
-        for (let item of data) {
-          item = util.filter(item, ['title', 'description', 'url', 'display_time', 'thumb', 'id']);
-          const articleText = await SpiderArticle.scratch(item.url);
-          item.text = articleText;
-          item.display_time = new Date(util.formatTime(item.display_time)).toISOString();
-          const artExist = await spider.findOne(item.article_id);
-          console.log('artExist--->', artExist);
-          if (artExist) {
-            continue;
-          }
-          const result = await spider.saveArticle(item);
-          console.log('result--->', result);
-          i++;
-        }
+        const result = SpiderAjax.scratch(archiveUrl);
+        handlerEvent.enQueue(result);
       }
     }
-    console.log('the count of articles is =', i);
   }
 };
