@@ -25,15 +25,15 @@ export default new class {
   detail = async (item) => {
     try {
       item = util.filter(item, ['title', 'description', 'url', 'display_time', 'thumb', 'id']);
-      const articleText = await SpiderArticle.scratch(item.url);
-      item.text = articleText;
-      const display_time = util.formatTime(item.display_time);
-      item.display_time = display_time && new Date(display_time).toISOString();
       const artExist = await spider.findOne(item.article_id);
       console.log('artExist--->', artExist);
       if (artExist) {
         return;
       }
+      const articleText = await SpiderArticle.scratch(item.url);
+      item.text = articleText;
+      const display_time = util.formatTime(item.display_time);
+      item.display_time = display_time && new Date(display_time).toISOString();
       await spider.saveArticle(item);
       this.num++;
       console.log('saveArticle', item.title, this.num);
