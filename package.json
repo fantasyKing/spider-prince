@@ -4,8 +4,8 @@
   "description": "spider",
   "main": "./src/index.js",
   "scripts": {
-    "start": "babel-node",
-    "spider": "babel-node",
+    "start": "babel-node ./src/index.js",
+    "spider": "babel-node ./src/index.js",
     "dist": "babel src -d dist",
     "test": "ava"
   },
