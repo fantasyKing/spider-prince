@@ -1,10 +1,19 @@
 import Spider from './spider_ctrl/spider';
 
-async function main() {
+async function main(period) {
+  let timer = null;
+  period = period || process.env.PERIOD || 2; // 默认两小时重复一次
   try {
-    await Spider.scratch();
+    timer = setInterval(async () => {
+      try {
+        await Spider.scratch();
+      } catch (err) {
+        console.log('setInterval err is', err);
+      }
+    }, period * 1000 * 60 * 60);
   } catch (err) {
     console.log('main err is', err);
+    clearInterval(timer);
   }
 }
 
