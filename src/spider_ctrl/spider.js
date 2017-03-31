@@ -14,14 +14,14 @@ export default new class {
    * 3. 将item存入mongodb
    */
   scratch = async () => {
-    const tabs = await SpiderTab.scratch(config.uri);
+    const tabs = await SpiderTab.scratch(config.uri); // 抓取目标网站的tab
     for (const tab of tabs) {
       const archivesUrls = util.getArchivesUrls(tab);
 
       for (const archiveUrl of archivesUrls) {
-        const result = SpiderAjax.scratch(archiveUrl);
-        handler.handle(result);
-        await util.sleep(1000);
+        const result = SpiderAjax.scratch(archiveUrl); // 开始抓取单页的文章
+        handler.handle(result); // 处理抓取的结果
+        await util.sleep(1000); // 暂停1s，防止达到目标网站的RateLimit
       }
     }
   }

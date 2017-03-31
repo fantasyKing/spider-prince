@@ -2,9 +2,11 @@
   "name": "spider-prince",
   "version": "1.0.0",
   "description": "spider",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "start": "babel-node",
+    "spider": "babel-node",
+    "dist": "babel src -d dist",
     "test": "ava"
   },
   "keywords": [

@@ -12,7 +12,7 @@ export default new class {
   handle = async (promise) => {
     try {
       const items = await promise;
-      const { data } = items;
+      const { data } = items; // data 中包含文章的列表
 
       for (const item of data) {
         this.detail(item);
@@ -25,16 +25,16 @@ export default new class {
   detail = async (item) => {
     try {
       item = util.filter(item, ['title', 'description', 'url', 'display_time', 'thumb', 'id']);
-      const artExist = await spider.findOne(item.article_id);
+      const artExist = await spider.findOne(item.article_id); // 判断文章是否已经被抓取过
       console.log('artExist--->', artExist);
       if (artExist) {
         return;
       }
-      const articleText = await SpiderArticle.scratch(item.url);
+      const articleText = await SpiderArticle.scratch(item.url); // 抓取文章的内容，用于搜索
       item.text = articleText;
       const display_time = util.formatTime(item.display_time);
       item.display_time = display_time && new Date(display_time).toISOString();
-      await spider.saveArticle(item);
+      await spider.saveArticle(item); // 将文章存入数据库
       this.num++;
       console.log('saveArticle', item.title, this.num);
     } catch (err) {

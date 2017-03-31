@@ -12,8 +12,7 @@ import Crawler from 'crawler';
 export default new class {
   constructor() {
     this.spider = new Crawler({
-      rateLimit: 500,
-      maxConnections: 100,
+      maxConnections: 2000, // 同时发送的请求的最大数量
       callback: (err, res, done) => {
         if (err) {
           console.error('there is no callback run, and the err is ', err);
@@ -28,6 +27,9 @@ export default new class {
     });
   }
 
+  /**
+   * 将uri加入抓取队列
+   */
   enQueue = async (uri, cb) => new Promise((resolve, reject) => {
     this.spider.queue([{
       uri,
