@@ -25,6 +25,11 @@ export default new class {
       console.log('spider request is ready');
       console.log('this.spider.size', this.spider.queueSize);
     });
+
+    this.spider.on('drain', () => {
+      console.log('this.spider.size', this.spider.queueSize);
+      console.log('---------spider drain---------');
+    });
   }
 
   /**
