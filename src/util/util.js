@@ -45,4 +45,8 @@ export default new class {
     const result = timeStr.match(timeReg);
     return result && result[0];
   }
+
+  sleep = async (time) => new Promise((resolve) => {
+    setTimeout(() => resolve(), time || 1000);
+  });
 };

@@ -12,7 +12,7 @@ import Crawler from 'crawler';
 export default new class {
   constructor() {
     this.spider = new Crawler({
-      rateLimit: 1000,
+      rateLimit: 500,
       maxConnections: 100,
       callback: (err, res, done) => {
         if (err) {

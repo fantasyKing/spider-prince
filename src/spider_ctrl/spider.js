@@ -4,12 +4,8 @@ import {
   SpiderAjax
 } from './../spider_proxy';
 import util from './../util/util';
-import HandlerEvent from './../util/handler_event';
 import handler from './handler';
 
-const HandlerEventInstace = new HandlerEvent();
-
-HandlerEventInstace.addListener('handle', handler.handle);
 
 export default new class {
   /**
@@ -24,7 +20,8 @@ export default new class {
 
       for (const archiveUrl of archivesUrls) {
         const result = SpiderAjax.scratch(archiveUrl);
-        HandlerEventInstace.enQueue(result);
+        handler.handle(result);
+        await util.sleep(1000);
       }
     }
   }
