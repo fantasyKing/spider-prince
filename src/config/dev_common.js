@@ -7,7 +7,7 @@ export default {
       options: {
         db: { native_parser: true },
         server: {
-          poolSize: 5,
+          poolSize: 10,
           auto_reconnect: true,
           socketOptions: {
             keepAlive: 1

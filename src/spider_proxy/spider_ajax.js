@@ -8,7 +8,7 @@ export default new class {
         uri,
         json: true
       };
-      const result = await rq(options);
+      const result = rq(options);
       return result;
     } catch (err) {
       console.error(err);

@@ -1,11 +1,11 @@
 import config from './../config';
 import {
   SpiderTab,
-  SpiderAjax,
-  SpiderArticle
+  SpiderAjax
 } from './../spider_proxy';
 import util from './../util/util';
-import spider from './../proxy/spider';
+import handler from './handler';
+
 
 export default new class {
   /**
@@ -14,32 +14,15 @@ export default new class {
    * 3. 将item存入mongodb
    */
   scratch = async () => {
-    const tabs = await SpiderTab.scratch(config.uri);
-    let i = 0;
+    const tabs = await SpiderTab.scratch(config.uri); // 抓取目标网站的tab
     for (const tab of tabs) {
       const archivesUrls = util.getArchivesUrls(tab);
 
       for (const archiveUrl of archivesUrls) {
-        const items = await SpiderAjax.scratch(archiveUrl);
-
-        const { data } = items;
-
-        for (let item of data) {
-          item = util.filter(item, ['title', 'description', 'url', 'display_time', 'thumb', 'id']);
-          const articleText = await SpiderArticle.scratch(item.url);
-          item.text = articleText;
-          item.display_time = new Date(util.formatTime(item.display_time)).toISOString();
-          const artExist = await spider.findOne(item.article_id);
-          console.log('artExist--->', artExist);
-          if (artExist) {
-            continue;
-          }
-          const result = await spider.saveArticle(item);
-          console.log('result--->', result);
-          i++;
-        }
+        const result = SpiderAjax.scratch(archiveUrl); // 开始抓取单页的文章
+        handler.handle(result); // 处理抓取的结果
+        await util.sleep(1000); // 暂停1s，防止达到目标网站的RateLimit
       }
     }
-    console.log('the count of articles is =', i);
   }
 };
